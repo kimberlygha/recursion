@@ -12,6 +12,9 @@ var stringifyJSON = function(obj) {
     return arr +"]"; 
   }
   else if (typeof obj == "object"){
+    if(obj == null){
+      return "null";
+    }
     var curly = "{";
     for(var key in obj){
       curly= curly+"\""+key+"\":"+ stringifyJSON(obj[key])+",";
@@ -27,3 +30,4 @@ var stringifyJSON = function(obj) {
     }
   }
 };
+console.log(stringifyJSON(null));
