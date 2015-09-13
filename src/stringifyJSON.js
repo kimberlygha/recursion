@@ -4,7 +4,10 @@
 // but you don't so you're going to write it from scratch:
 
 var stringifyJSON = function(obj) {
-  if(Array.isArray(obj)){
+  if(obj == null|| obj == undefined || typeof obj =="function"){
+      return "null";
+  }
+  else if(Array.isArray(obj)){
     var arr = [];
     for(var i=0; i<obj.length;i++){
       arr.push(stringifyJSON(obj[i]));
@@ -13,24 +16,17 @@ var stringifyJSON = function(obj) {
     return "["+arr.toString()+"]"; 
   }
   else if (typeof obj == "object"){
-    if(obj == null){
-      return "null";
-    }
-    var curly = [];
+    var curly =[];
     for(var key in obj){
-      if(typeof obj[key] == undefined || typeof obj[key] == "function"){
-        return; 
+      if(typeof obj[key] !== "undefined" && typeof obj[key] !== "function"){
+        curly.push("\""+key+"\":"+ stringifyJSON(obj[key]));
       }
-      curly.push("\""+key+"\":"+ stringifyJSON(obj[key]));
     }
     console.log("{"+ curly.toString()+"}");
     return "{"+ curly.toString()+"}";
   }
   else{
-    if(obj == undefined || typeof obj == "function"){
-      return ""; 
-    }
-    else if(typeof obj == "string"){
+    if(typeof obj == "string"){
       return "\""+obj+"\"";
     }
     else{
