@@ -5,29 +5,33 @@
 
 var stringifyJSON = function(obj) {
   if(Array.isArray(obj)){
-    var arr = "[";
+    var arr = [];
     for(var i=0; i<obj.length;i++){
-      arr = arr+ (stringifyJSON(obj[i]))+",";
+      arr.push(stringifyJSON(obj[i]));
     }
-    return arr +"]"; 
+    return "["+arr.toString()+"]"; 
   }
   else if (typeof obj == "object"){
     if(obj == null){
       return "null";
     }
-    var curly = "{";
+    var curly = [];
     for(var key in obj){
-      curly= curly+"\""+key+"\":"+ stringifyJSON(obj[key])+",";
+      curly.push("\""+key+"\":"+ stringifyJSON(obj[key]));
     }
-    return curly+"}";
+    console.log(Array.isArray(curly));
+    return "{"+ curly.toString()+"}";
   }
   else{
-    if(typeof obj == "number"){
-      return obj.toString();
+    if(typeof obj == "string"){
+      return "\""+obj+"\"";
+    }
+    else if(typeof obj == undefined || typeof obj == "function"){
+      return; 
     }
     else{
-      return "\""+obj+"\"";
+      return obj.toString();
     }
   }
 };
-console.log(stringifyJSON(null));
+
